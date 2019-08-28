@@ -24,7 +24,9 @@ services:
     postgres:
         image: postgres:latest
         ports:
-            - "54327:5432"
+            - "54320:5432"
+        volumes:
+          - ./persistent_data:/var/lib/postgresql
         environment:
           - POSTGRES_USER=root
           - POSTGRES_DB=project
@@ -33,7 +35,7 @@ services:
     postgres_testing:
         image: postgres:latest
         ports:
-            - "54328:5432"
+            - "54321:5432"
         environment:
           - POSTGRES_USER=root
           - POSTGRES_DB=project_testing
