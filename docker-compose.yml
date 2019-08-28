@@ -24,15 +24,17 @@ services:
     postgres:
         image: postgres:latest
         ports:
-            - "54322:5432"
+            - "54327:5432"
         environment:
+          - POSTGRES_USER=root
           - POSTGRES_DB=project
           - POSTGRES_PASSWORD=password
 
     postgres_testing:
         image: postgres:latest
         ports:
-            - "54323:5432"
+            - "54328:5432"
         environment:
+          - POSTGRES_USER=root
           - POSTGRES_DB=project_testing
           - POSTGRES_PASSWORD=password
