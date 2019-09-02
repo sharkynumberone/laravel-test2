@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class LogRecord
+ * Class Log
  * @package App\Models
  */
-class LogRecord extends Model
+class Log extends Model
 {
     /**
      * The attributes that are mass assignable.
