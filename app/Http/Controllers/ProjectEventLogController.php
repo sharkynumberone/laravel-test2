@@ -1,52 +1,51 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\ProjectEventLog;
 use App\Repositories\Repository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Validator;
 
 /**
- * Class ProjectService
- * @package App\Services
+ * Class ProjectEventLogController
+ * @package App\Http\Controllers
  */
-class ProjectService
+class ProjectEventLogController extends Controller
 {
+    // space that we can use the repository from
     /**
      * @var Repository
      */
     protected $model;
 
     /**
-     * ProjectService constructor.
-     * @param Project $project
+     * ProjectController constructor.
+     * @param ProjectEventLog $log
      */
-    public function __construct(Project $project)
+    public function __construct(ProjectEventLog $log)
     {
         // set the model
-        $this->model = new Repository($project);
+        $this->model = new Repository($log);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|mixed
      */
-    public function all()
+    public function index()
     {
         return $this->model->all();
     }
 
-
     /**
-     * @param $request
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|mixed
+     * @param Request $request
+     * @return mixed
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
-            'url' => 'required|max:255'
+            'project_id' => 'required|exists:projects,id',
+            'user_id' => 'required|integer'
         ]);
 
         // create record and pass in only fields that are fillable
@@ -63,41 +62,25 @@ class ProjectService
     }
 
     /**
-     * Update department
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function update(Request $request, $id)
     {
-        $this->model->update($request->all(), $id);
+        // update model and only pass in the fillable fields
+        $this->model->update($request->only($this->model->getModel()->fillable), $id);
 
         return $this->model->find($id);
     }
 
     /**
-     * Update department
      * @param $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return int|mixed
+     * @throws \Exception
      */
     public function destroy($id)
     {
         return $this->model->delete($id);
-    }
-
-    /**
-     * @return string
-     */
-    public static function randomKey(){
-
-        $key = Str::random(40);
-
-        $validator = Validator::make(['key'=>$key],['key'=>'unique:projects,key']);
-
-        if($validator->fails()){
-            return static::randomKey();
-        }
-
-        return $key;
     }
 }

@@ -5,9 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateLogsTable
+ * Class CreateProjectsEventsLogsTable
  */
-class CreateLogsTable extends Migration
+class CreateProjectsEventsLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('projects_events_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('project_id');
             $table->bigInteger('user_id')->nullable();
@@ -39,6 +39,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('projects_events_logs');
     }
 }
