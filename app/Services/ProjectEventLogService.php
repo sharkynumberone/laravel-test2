@@ -2,17 +2,16 @@
 namespace App\Services;
 
 /**
- * Class ProjectService
+ * Class ProjectEventLogService
  * @package App\Services
  */
-class ProjectService extends AbstractService
+class ProjectEventLogService extends AbstractService
 {
     /**
      * @return mixed|string
      */
     public static function getRepository()
     {
-        return \App\Repositories\ProjectRepository::class;
+        return \App\Repositories\ProjectEventLogRepository::class;
     }
-
 }
