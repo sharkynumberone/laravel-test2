@@ -12,6 +12,7 @@ use App\Models\User;
 class UserRepository extends AbstractRepository
 {
     /**
+     * Set class
      * @return string
      */
     public static function getClassName()

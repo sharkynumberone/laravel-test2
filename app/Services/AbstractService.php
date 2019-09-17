@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Services;
+
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class AbstractService
@@ -8,36 +11,58 @@ namespace App\Services;
 abstract class AbstractService
 {
     /**
+     * Get repository name
      * @return mixed
      */
     abstract static public function getRepository();
 
     /**
-     * @param array $array
+     * Get all items
      * @return mixed
      */
-    public function create(array $array)
+    public static function all()
     {
-        return (self::getRepository())::create($array);
+        return (static::getRepository())::all();
     }
 
     /**
-     * @param array $array
-     * @param int $id
+     * Get paginated items
      * @return mixed
      */
-    public function update(array $array, int $id)
+    public static function paginated()
     {
-        return (self::getRepository())::update($array, $id);
+        return (static::getRepository())::paginated(15);
     }
 
     /**
-     * @param int $id
+     * Create item
+     * @param array $array
      * @return mixed
      */
-    public function delete(int $id)
+    public static function create(array $array)
     {
-        return (self::getRepository())::delete($id);
+        return (static::getRepository())::create($array);
+    }
+
+    /**
+     * Update item
+     * @param array $array
+     * @param Model $model
+     * @return mixed
+     */
+    public static function update(array $array, Model $model)
+    {
+        return (static::getRepository())::update($array, $model);
+    }
+
+    /**
+     * Delete item
+     * @param Model $model
+     * @return mixed
+     */
+    public static function delete(Model $model)
+    {
+        return (static::getRepository())::delete($model);
     }
 
 }

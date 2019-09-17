@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Class Repository
  * @package App\Repositories
@@ -9,41 +11,65 @@ namespace App\Repositories;
 abstract class AbstractRepository
 {
     /**
+     * Get class name
      * @return mixed
      */
     abstract static public function getClassName();
 
     /**
-     * @param array $array
+     * Paginated items
+     * @param $paginate
      * @return mixed
      */
-    public function create(array $array)
+    public static function paginated($paginate)
     {
-        return (self::getClassName())::create($array);
+        return (static::getClassName())::query()
+            ->orderBy('created_at', 'asc')
+            ->paginate($paginate);
     }
 
 
     /**
-     * @param array $array
-     * @param int $id
+     * Get all items
      * @return mixed
      */
-    public function update(array $array, int $id)
+    public static function all()
     {
-        $model = (self::getClassName())::find($id);
+        return (static::getClassName())::query()->orderBy(
+            'created_at', 'asc')->get();
+    }
+
+    /**
+     * Create item
+     * @param array $array
+     * @return mixed
+     */
+    public static function create(array $array)
+    {
+        return (static::getClassName())::create($array);
+    }
+
+    /**
+     * Update item
+     * @param array $array
+     * @param Model $model
+     * @return mixed
+     */
+    public static function update(array $array, Model $model)
+    {
         $model->update($array);
 
         return $model->fresh();
     }
 
     /**
-     * @param int $id
+     * Delete item
+     * @param Model $model
      * @return mixed
+     * @throws \Exception
      */
-    public function delete(int $id)
+    public static function delete(Model $model)
     {
-        $model = (self::getClassName())::find($id);
-
         return $model->delete();
     }
 }

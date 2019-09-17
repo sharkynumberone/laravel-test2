@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
 
@@ -26,47 +27,68 @@ class ProjectController extends Controller
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|mixed
+     * Show all projects page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        return $this->project_service->all();
+        $projects = $this->project_service->all();
+
+        return view('project.index', compact('projects'));
     }
 
     /**
+     * Show create project form
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function createForm()
+    {
+        return view('project.create');
+    }
+
+    /**
+     * Show update project form
+     * @param Project $project
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function updateForm(Project $project)
+    {
+        return view('project.update', compact('project'));
+    }
+
+    /**
+     * Create new project
      * @param Request $request
      * @return mixed
      */
     public function store(Request $request)
     {
-        return $this->project_service->store($request);
+        $this->project_service->create($request->all());
+
+        return redirect()->route('project.index');
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Model|mixed
-     */
-    public function show($id)
-    {
-        return $this->project_service->show($id);
-    }
-
-    /**
+     * Update project
      * @param Request $request
-     * @param $id
+     * @param Project $project
      * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        return $this->project_service->update($request, $id);
+        $this->project_service->update($request->all(), $project);
+
+        return redirect()->back();
     }
 
     /**
-     * @param $id
+     * Delete project
+     * @param Project $project
      * @return int|mixed
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        return $this->project_service->destroy($id);
+        $this->project_service->delete($project);
+        return redirect()->back();
     }
 }

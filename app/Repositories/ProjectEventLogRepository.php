@@ -12,6 +12,7 @@ use App\Models\ProjectEventLog;
 class ProjectEventLogRepository extends AbstractRepository
 {
     /**
+     * Set class
      * @return mixed|string
      */
     public static function getClassName()

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProjectEventLog;
-use App\Repositories\Repository;
+use App\Services\ProjectEventLogService;
 use Illuminate\Http\Request;
 
 /**
@@ -12,75 +11,27 @@ use Illuminate\Http\Request;
  */
 class ProjectEventLogController extends Controller
 {
-    // space that we can use the repository from
     /**
-     * @var Repository
+     * @var ProjectEventLogService
      */
-    protected $model;
+    protected $project_event_log_service;
 
     /**
      * ProjectController constructor.
-     * @param ProjectEventLog $log
+     * @param ProjectEventLogService $project_event_log_service
      */
-    public function __construct(ProjectEventLog $log)
+    public function __construct(ProjectEventLogService $project_event_log_service)
     {
-        // set the model
-        $this->model = new Repository($log);
+        $this->project_event_log_service = $project_event_log_service;
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|mixed
-     */
-    public function index()
-    {
-        return $this->model->all();
-    }
-
-    /**
+     * Create project event log
      * @param Request $request
      * @return mixed
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|integer'
-        ]);
-
-        // create record and pass in only fields that are fillable
-        return $this->model->create($request->only($this->model->getModel()->fillable));
-    }
-
-    /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Model|mixed
-     */
-    public function show($id)
-    {
-        return $this->model->show($id);
-    }
-
-    /**
-     * @param Request $request
-     * @param $id
-     * @return mixed
-     */
-    public function update(Request $request, $id)
-    {
-        // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-
-        return $this->model->find($id);
-    }
-
-    /**
-     * @param $id
-     * @return int|mixed
-     * @throws \Exception
-     */
-    public function destroy($id)
-    {
-        return $this->model->delete($id);
+        return $this->project_event_log_service->create($request->all());
     }
 }

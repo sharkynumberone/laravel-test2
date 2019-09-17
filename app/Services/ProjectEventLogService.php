@@ -8,6 +8,7 @@ namespace App\Services;
 class ProjectEventLogService extends AbstractService
 {
     /**
+     * Set repository class
      * @return mixed|string
      */
     public static function getRepository()

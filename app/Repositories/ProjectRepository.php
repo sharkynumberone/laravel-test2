@@ -12,6 +12,7 @@ use App\Models\Project;
 class ProjectRepository extends AbstractRepository
 {
     /**
+     * Set class
      * @return string
      */
     public static function getClassName()

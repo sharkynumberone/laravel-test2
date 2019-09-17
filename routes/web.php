@@ -18,3 +18,10 @@ Route::get('/', function () {
 Auth::routes(['verify' => true, 'register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/projects', 'ProjectController@index')->name('project.index');
+Route::get('/project/create', 'ProjectController@createForm')->name('project.create.form');
+Route::post('/project/create', 'ProjectController@store')->name('project.create');
+Route::get('/project/{project}', 'ProjectController@updateForm');
+Route::put('/project/{project}', 'ProjectController@update')->name('project.update');
+Route::get('/project/{project}/delete', 'ProjectController@destroy')->name('project.delete');
