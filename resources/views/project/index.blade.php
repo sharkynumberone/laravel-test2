@@ -8,10 +8,20 @@
                     <div class="card-header">Список проектов</div>
                     <div class="card-body">
                         <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <a href="{{route('project.create.form')}}">
-                                Создать
-                            </a>
+                            <form action="{{route('project.index')}}">
+                                <i class="fa fa-edit"></i>
+                                <a href="{{route('project.create.form')}}">
+                                    Создать
+                                </a>
+                                <select name="sort_by">
+                                    <option {{request()->get('sort_by') == 'id' ? 'selected' : ''}} value="id">ID</option>
+                                    <option {{request()->get('sort_by') == 'name' ? 'selected' : ''}} value="name">Название</option>
+                                    <option {{request()->get('sort_by') == 'url' ? 'selected' : ''}} value="url">URL</option>
+                                </select>
+                                <button type="submit">Сортировать</button>
+                            </form>
+                        </div>
+                        <div class="tools">
                         </div>
                         <table class="table">
                             <thead>
@@ -40,6 +50,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                            {{$projects->appends(['sort_by' => request()->get('sort_by')])->links()}}
                     </div>
                 </div>
             </div>

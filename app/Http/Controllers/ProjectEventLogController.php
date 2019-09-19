@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateNewProjectEventLog;
+use App\Models\Project;
 use App\Services\ProjectEventLogService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -26,12 +29,27 @@ class ProjectEventLogController extends Controller
     }
 
     /**
-     * Create project event log
+     * Show all projects page
      * @param Request $request
-     * @return mixed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function store(Request $request)
+    public function index(Request $request)
     {
-        return $this->project_event_log_service->create($request->all());
+        $project_event_logs = $this->project_event_log_service->all($request->all());
+
+        return view('project_event_log.index', compact('project_event_logs'));
+    }
+
+    /**
+     * Store project log from external api
+     * @param Project $project
+     * @param CreateNewProjectEventLog $request
+     * @return JsonResponse
+     */
+    public function store(Project $project, CreateNewProjectEventLog $request) : JsonResponse
+    {
+        $this->project_event_log_service->store($project, $request->all());
+
+        return response()->json(['success' => true]);
     }
 }

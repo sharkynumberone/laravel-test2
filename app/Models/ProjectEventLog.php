@@ -22,4 +22,12 @@ class ProjectEventLog extends Model
         'event_url',
         'data'
     ];
+
+    /**
+     * Project
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project() {
+        return $this->belongsTo('App\Models\Project');
+    }
 }

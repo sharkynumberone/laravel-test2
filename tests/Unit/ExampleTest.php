@@ -5,7 +5,11 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+/**
+ * Class ProjectEventLogsTest
+ * @package Tests\Unit
+ */
+class ProjectEventLogsTest extends TestCase
 {
     /**
      * A basic test example.

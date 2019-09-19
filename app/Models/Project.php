@@ -20,4 +20,12 @@ class Project extends Model
         'url',
         'key',
     ];
+
+    /**
+     * Logs
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs() {
+        return $this->hasMany('App\Models\ProjectEventLog');
+    }
 }

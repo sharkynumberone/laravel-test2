@@ -1,0 +1,60 @@
+swagger: "2.0"
+info:
+  title: "Laravel test 2"
+  description: "Docs for laravel test 2"
+  version: "1.0.0"
+schemes:
+  - "http"
+host: localhost:3180
+basePath: /api
+paths:
+  /projects/{project}/logs:
+    post:
+      tags:
+        - "employee"
+      summary: "Create project event log record"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "project"
+          type: "integer"
+          in: "path"
+          description: "Id of project"
+          required: true
+        - name: "CreateProjectEventLogRequestBody"
+          in: "body"
+          description: "Data to store project event log"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateProjectEventLogRequestModel"
+      responses:
+        200:
+          description: "Successful operation"
+        403:
+          description: "Access denied"
+        404:
+          description: "Entity not found"
+
+definitions:
+  CreateProjectEventLogRequestModel:
+    type: "object"
+    properties:
+      project_key:
+        type: "string"
+        required: true
+      project_id:
+        type: "integer"
+        required: true
+      user_id:
+        type: "integer"
+      event_type:
+        type: "string"
+        required: true
+      event_url:
+        type: "string"
+        required: true
+      data:
+        type: "object"

@@ -28,11 +28,12 @@ class ProjectController extends Controller
 
     /**
      * Show all projects page
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = $this->project_service->all();
+        $projects = $this->project_service->all($request->all());
 
         return view('project.index', compact('projects'));
     }
@@ -89,6 +90,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $this->project_service->delete($project);
+
         return redirect()->back();
     }
 }

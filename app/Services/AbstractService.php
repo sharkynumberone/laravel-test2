@@ -18,20 +18,16 @@ abstract class AbstractService
 
     /**
      * Get all items
+     * @param array $params
      * @return mixed
      */
-    public static function all()
+    public static function all(array $params = [])
     {
-        return (static::getRepository())::all();
-    }
+        if (!isset($params['sort_by'])) {
+            $params['sort_by'] = 'id';
+        }
 
-    /**
-     * Get paginated items
-     * @return mixed
-     */
-    public static function paginated()
-    {
-        return (static::getRepository())::paginated(15);
+        return (static::getRepository())::all($params);
     }
 
     /**

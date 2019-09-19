@@ -17,26 +17,13 @@ abstract class AbstractRepository
     abstract static public function getClassName();
 
     /**
-     * Paginated items
-     * @param $paginate
-     * @return mixed
-     */
-    public static function paginated($paginate)
-    {
-        return (static::getClassName())::query()
-            ->orderBy('created_at', 'asc')
-            ->paginate($paginate);
-    }
-
-
-    /**
      * Get all items
+     * @param array $params
      * @return mixed
      */
-    public static function all()
+    public static function all(array $params)
     {
-        return (static::getClassName())::query()->orderBy(
-            'created_at', 'asc')->get();
+        return (static::getClassName())::orderBy($params['sort_by'])->paginate(config('total.per_page'));
     }
 
     /**
