@@ -27,4 +27,14 @@ class ProjectEventLogService extends AbstractService
     public function store(Model $model, array $params) {
         return (static::getRepository())::store($model, $params);
     }
+
+    /**
+     * Show logs by project
+     * @param Model $model
+     * @param array $params
+     * @return mixed
+     */
+    public function show(Model $model, array $params) {
+       return (static::getRepository())::show($model, $params);
+    }
 }

@@ -38,6 +38,35 @@ paths:
         404:
           description: "Entity not found"
 
+    get:
+      tags:
+        - "employee"
+      summary: "Show project event log records"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "project"
+          type: "integer"
+          in: "path"
+          description: "Id of project"
+          required: true
+        - name: "key"
+          type: "string"
+          in: "query"
+          description: "Key of project"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ProjectEventLogListModel"
+        403:
+          description: "Access denied"
+        404:
+          description: "Entity not found"
+
 definitions:
   CreateProjectEventLogRequestModel:
     type: "object"
@@ -58,3 +87,32 @@ definitions:
         required: true
       data:
         type: "object"
+  ProjectEventLogListModel:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/ProjectEventLogModel"
+        count:
+          type: "integer"
+
+  ProjectEventLogModel:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      project_id:
+        type: "integer"
+      user_id:
+        type: "integer"
+      event_type:
+        type: "string"
+      event_url:
+        type: "string"
+      data:
+        type: "object"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"

@@ -34,9 +34,29 @@ class ProjectEventLogRepository extends AbstractRepository
         return (static::getClassName())::create($array);
     }
 
-    public static function all(array $params)
+    /**
+     * Get all items
+     * @param array $params
+     * @return array|mixed
+     */
+    public static function all(array $params = [])
     {
-        return (static::getClassName())::with('project')->orderBy($params['sort_by'])->paginate(config('total.per_page'));
+        $query = (static::getClassName())::with('project');
+
+        return static::applyListParams($query, $params);
+    }
+
+    /**
+     * Show logs by project
+     * @param Model $model
+     * @param array $array
+     * @return array
+     */
+    public static function show(Model $model, array $array)
+    {
+        $query = (static::getClassName())::where('project_id', $model->id);
+
+        return static::applyListParams($query, $array);
     }
 
 }

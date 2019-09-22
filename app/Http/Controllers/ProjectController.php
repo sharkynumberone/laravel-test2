@@ -33,7 +33,7 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = $this->project_service->all($request->all());
+        $projects = $this->project_service->allWithPaginate($request->all());
 
         return view('project.index', compact('projects'));
     }

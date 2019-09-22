@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
  * Class AbstractService
@@ -23,11 +24,39 @@ abstract class AbstractService
      */
     public static function all(array $params = [])
     {
-        if (!isset($params['sort_by'])) {
-            $params['sort_by'] = 'id';
-        }
-
         return (static::getRepository())::all($params);
+    }
+
+    /**
+     * Get all items with paginate
+     * @param array $params
+     * @return LengthAwarePaginator
+     */
+    public static function allWithPaginate(array $params = [])
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = config('options.pagination_per_page');
+
+        $result = (static::getRepository())::all($params);
+
+        $currentItems = array_slice($result['items']->toArray(), $perPage * ($currentPage - 1), $perPage);
+
+        $paginator = new LengthAwarePaginator(
+            $currentItems,
+            $result['count'],
+            $perPage,
+            $currentPage,
+            [
+                'path' => \Request::url(),
+                'query' => [
+                    'page' => $currentPage
+                ]
+            ]);
+
+        $results = $paginator->appends('sort_by', isset($params['sort_by']) ? $params['sort_by'] : 'id')
+            ->appends('sort_direction', isset($params['sort_direction']) ? $params['sort_direction'] : 'asc');
+
+        return $results;
     }
 
     /**

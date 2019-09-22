@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Repositories\ProjectEventLogRepository;
+use App\Services\ProjectEventLogService;
 use App\Services\ProjectService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,13 +16,27 @@ class ProjectEventLogsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Create new project event log path
+     * @param int $id
+     * @return string
+     */
     protected function itemPath(int $id)
     {
         return route('project_event_log.store', ['project' => $id]);
     }
 
     /**
-     * A basic test example.
+     * Show detail logs page path
+     * @param int $id
+     * @return string
+     */
+    protected function showPath(int $id) {
+        return route('project_event_log.show', ['project' => $id]);
+    }
+
+    /**
+     * Create project event log from api
      *
      * @test
      */
@@ -45,5 +61,31 @@ class ProjectEventLogsTest extends TestCase
         $data['project_key'] = $project->key;
         $this->postJson($this->itemPath($project->id),
             $data)->assertStatus(200);
+    }
+
+    /**
+     * Show project event log from api
+     *
+     * @test
+     */
+    public function showProjectEventLogTest()
+    {
+        $project = ProjectService::create(['name' => 'проект 1', 'url' => 'http://ya.ru']);
+
+        $data = [
+            'project_id' => $project->id,
+            'user_id' => 1,
+            'event_type' => 'Просмотр главной страницы',
+            'event_url' => 'http://site.com',
+        ];
+
+        ProjectEventLogService::create($data);
+
+        $this->getJson($this->showPath($project->id))->assertStatus(403);
+
+        $this->json('GET', $this->showPath($project->id), [
+            'key' => $project->key
+        ])->assertStatus(200);
+
     }
 }

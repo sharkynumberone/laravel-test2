@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('projects')->group(function () {
     Route::post('/{project}/logs', 'ProjectEventLogController@store')->name('project_event_log.store');
+    Route::get('/{project}/logs', 'ProjectEventLogController@show')->name('project_event_log.show');
 });

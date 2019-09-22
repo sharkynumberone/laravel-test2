@@ -2,6 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Helpers\ApplyDefaultSorting;
+use App\Helpers\ApplyPagination;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class AbstractRepository
 {
+    use ApplyPagination, ApplyDefaultSorting;
+
     /**
      * Get class name
      * @return mixed
@@ -17,13 +22,35 @@ abstract class AbstractRepository
     abstract static public function getClassName();
 
     /**
+     * Apply pagination & default sorting to query
+     *
+     * @param Builder $query
+     * @param array $params
+     * @return array
+     */
+    public static function applyListParams(Builder $query, array $params): array
+    {
+        $count = $query->count();
+        static::applyPagination($query, $params);
+        static::applyDefaultSorting($query, $params);
+
+        return [
+            'items' => $query->get(),
+            'count' => $count
+        ];
+    }
+
+
+    /**
      * Get all items
      * @param array $params
      * @return mixed
      */
-    public static function all(array $params)
+    public static function all(array $params = [])
     {
-        return (static::getClassName())::orderBy($params['sort_by'])->paginate(config('total.per_page'));
+        $query = (static::getClassName())::query();
+
+        return static::applyListParams($query, $params);
     }
 
     /**

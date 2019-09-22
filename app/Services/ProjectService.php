@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 use \Validator;
 

@@ -7,10 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 /**
- * Class CreateNewProjectEventLog
+ * Class ShowProjectEventLog
  * @package App\Http\Requests
  */
-class CreateNewProjectEventLog extends FormRequest
+class ShowProjectEventLog extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,9 +30,7 @@ class CreateNewProjectEventLog extends FormRequest
     public function rules()
     {
         return [
-            'project_key' => 'required|exists:projects,key',
-            'event_type' => 'required',
-            'event_url' => 'required',
+            'key' => 'required|exists:projects,key',
         ];
     }
 
