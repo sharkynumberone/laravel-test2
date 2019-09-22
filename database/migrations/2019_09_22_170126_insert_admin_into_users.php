@@ -18,7 +18,7 @@ class InsertAdminIntoUsers extends Migration
         User::create([
             'email' => 'admin@root.com',
             'name' => 'administrator',
-            'password' => bcrypt(config('options.default_admin_password')),
+            'password' => bcrypt(config('users.default_admin_password')),
         ]);
     }
     /**

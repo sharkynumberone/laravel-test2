@@ -36,7 +36,7 @@ class ProjectEventLogController extends Controller
      */
     public function index(Request $request)
     {
-        $project_event_logs = $this->project_event_log_service->allWithPaginate($request->all());
+        $project_event_logs = $this->project_event_log_service->all($request->all());
 
         return view('project_event_log.index', compact('project_event_logs'));
     }

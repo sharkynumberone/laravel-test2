@@ -25,18 +25,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($project_event_logs as $log)
+                            @foreach ($project_event_logs['items'] as $log)
                                 <tr>
-                                    <th scope="row">{{$log['id']}}</th>
-                                    <td>{{$log['project']['name']}}</td>
-                                    <td>{{$log['user_id']}}</td>
-                                    <td>{{$log['event_type']}}</td>
-                                    <td>{{$log['event_url']}}</td>
+                                    <th scope="row">{{$log->id}}</th>
+                                    <td>{{$log->project->name}}</td>
+                                    <td>{{$log->user_id}}</td>
+                                    <td>{{$log->event_type}}</td>
+                                    <td>{{$log->event_url}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                        {{$project_event_logs->links()}}
+                        <div class="d-flex justify-content-center">
+                            @if ((int)round($project_event_logs['count']/config('options.pagination_per_page')) > 1)
+                                @for ($i = 0; $i < (int)round($project_event_logs['count']/config('options.pagination_per_page')); $i++)
+                                    <a href="{{route('project_event_log.index')}}?limit={{(int)config('options.pagination_per_page')}}&offset={{$i*config('options.pagination_per_page')}}">{{$i+1}}</a>
+                                @endfor
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

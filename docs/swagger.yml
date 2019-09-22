@@ -48,6 +48,25 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: "limit"
+          type: "integer"
+          in: "query"
+          description: "Limit of items in output"
+          required: true
+        - name: "offset"
+          type: "integer"
+          in: "query"
+          description: "Offset of items in output"
+          required: true
+        - name: "sort_by"
+          type: "string"
+          in: "query"
+          description: "Sorting items by field"
+        - name: "sort_direction"
+          type: "string"
+          enum: [asc, desc]
+          in: "query"
+          description: "asc or desc"
         - name: "project"
           type: "integer"
           in: "path"
