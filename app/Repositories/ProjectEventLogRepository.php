@@ -119,16 +119,35 @@ class ProjectEventLogRepository extends AbstractRepository
     }
 
     /**
+     * Get most viewed page
+     * @param Model $model
+     * @return mixed
+     */
+    public static function getTopProjectEventUrl(Model $model) {
+        $table = App::make(static::getClassName())->getTable();
+        $query = DB::table($table)
+            ->select('event_url')
+            ->where('project_id', '=', $model->id)
+            ->groupBy('event_url')
+            ->orderBy(DB::raw('COUNT(event_url)'), 'desc')
+            ->limit(1)
+            ->get();
+
+        return $query;
+    }
+
+    /**
      * Get count events group by day of week
      * @param Model $model
      * @return \Illuminate\Support\Collection
      */
     public static function getCountOfEventByDayOfWeek(Model $model) {
         $table = App::make(static::getClassName())->getTable();
+
         $query = DB::table($table)
-            ->select(array(DB::raw('Date(created_at) as date'), DB::raw('COUNT(event_url) as count')))
+            ->select(array(DB::raw('EXTRACT(DOW FROM (Date(created_at))) as day_of_week'), DB::raw('COUNT(event_url) as count')))
             ->where('project_id', '=', $model->id)
-            ->groupBy(DB::raw('Date(created_at)'))
+            ->groupBy(DB::raw('EXTRACT(DOW FROM (Date(created_at)))'))
             ->get();
 
         return $query;

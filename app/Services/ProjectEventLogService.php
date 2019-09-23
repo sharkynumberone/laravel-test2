@@ -73,4 +73,13 @@ class ProjectEventLogService extends AbstractService
     public function getCountOfEventByDayOfWeek(Model $model) {
         return (static::getRepository())::getCountOfEventByDayOfWeek($model);
     }
+
+    /**
+     * Get most viewed page
+     * @param Model $model
+     * @return mixed
+     */
+    public static function getTopProjectEventUrl(Model $model) {
+        return (static::getRepository())::getTopProjectEventUrl($model);
+    }
 }

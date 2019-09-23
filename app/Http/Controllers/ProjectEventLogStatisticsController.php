@@ -10,7 +10,7 @@ use App\Services\ProjectEventLogService;
  * Class ProjectEventLogStatistics
  * @package App\Http\Controllers
  */
-class ProjectEventLogStatisticsController  extends Controller
+class ProjectEventLogStatisticsController extends Controller
 {
     /**
      * @var ProjectEventLogService
@@ -31,44 +31,20 @@ class ProjectEventLogStatisticsController  extends Controller
      * @param Project $project
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getMostActiveUser(Project $project)
+    public function getStatistics(Project $project)
     {
         $most_active_user = $this->project_event_log_service->getMostActiveUser($project);
-
-        return view('project_event_log.most-active-user', compact('most_active_user'));
-    }
-
-    /**
-     * Get most active event
-     * @param Project $project
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getMostActiveEvent(Project $project)
-    {
         $most_active_event = $this->project_event_log_service->getMostActiveEvent($project);
-
-        return view('project_event_log.most-active-event', compact('most_active_event'));
-    }
-
-    /**
-     * Get project events
-     * @param Project $project
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getProjectEvents(Project $project)
-    {
+        $most_viewed_page = $this->project_event_log_service->getTopProjectEventUrl($project);
         $events = $this->project_event_log_service->getProjectEvents($project);
+        $events_dw = $this->project_event_log_service->getCountOfEventByDayOfWeek($project);
 
-        return view('project_event_log.events', compact('events'));
-    }
-
-    /**
-     * Get count events group by day of week
-     * @param Project $project
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getCountOfEventByDayOfWeek(Project $project) {
-        $events = $this->project_event_log_service->getCountOfEventByDayOfWeek($project);
-        return view('project_event_log.dates-with-events', compact('events'));
+        return view('project_event_log.statistics', compact(
+            'most_active_user',
+            'most_active_event',
+            'events',
+            'events_dw',
+            'most_viewed_page'
+        ));
     }
 }
