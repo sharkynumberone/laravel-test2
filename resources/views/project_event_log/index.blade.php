@@ -11,6 +11,11 @@
                             <a href="{{route('project_event_log.index')}}?sort_by=id&sort_direction=asc">Сортировать по Id</a>
                             <a href="{{route('project_event_log.index')}}?sort_by=project_id&sort_direction=asc">Сортировать по проекту</a>
                             <a href="{{route('project_event_log.index')}}?sort_by=user_id&sort_direction=asc">Сортировать по пользователю</a>
+                            <form action="{{route('project_event_log.index')}}">
+                                <p>Выберите дату: <input type="date" name="date_from" value="{{request()->input('date_from')}}">
+                                    <input type="date" name="date_to" value="{{request()->input('date_to')}}">
+                                    <input type="submit" value="Отправить"></p>
+                            </form>
                         </div>
                         <div class="tools">
                         </div>

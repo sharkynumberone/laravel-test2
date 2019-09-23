@@ -29,3 +29,7 @@ Route::get('/project/{project}', 'ProjectController@updateForm');
 Route::put('/project/{project}', 'ProjectController@update')->name('project.update');
 Route::get('/project/{project}/delete', 'ProjectController@destroy')->name('project.delete');
 Route::get('/logs', 'ProjectEventLogController@index')->name('project_event_log.index');
+Route::get('/project/{project}/most-active-user', 'ProjectEventLogStatisticsController@getMostActiveUser');
+Route::get('/project/{project}/most-active-event', 'ProjectEventLogStatisticsController@getMostActiveEvent');
+Route::get('/project/{project}/events', 'ProjectEventLogStatisticsController@getProjectEvents');
+Route::get('/project/{project}/events-split-by-day', 'ProjectEventLogStatisticsController@getCountOfEventByDayOfWeek');

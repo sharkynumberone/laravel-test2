@@ -30,6 +30,10 @@ abstract class AbstractRepository
      */
     public static function applyListParams(Builder $query, array $params): array
     {
+        if (!isset($params['limit'])) {
+            $params['limit'] = config('options.pagination_per_page');
+        }
+
         $count = $query->count();
         static::applyPagination($query, $params);
         static::applyDefaultSorting($query, $params);
